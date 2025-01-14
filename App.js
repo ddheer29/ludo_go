@@ -1,12 +1,9 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import LudoBoardScreen from './src/screens/LudoboardScreen';
 
 const App = () => {
-  return (
-    <View>
-      <Text>App</Text>
-    </View>
-  );
+  return <LudoBoardScreen />;
 };
 
 export default App;
