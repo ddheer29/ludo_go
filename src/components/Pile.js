@@ -11,7 +11,7 @@ import React, {useEffect, useMemo, useRef} from 'react';
 import {BackgroundImage} from '../helper/GetIcon';
 import {Svg, Circle} from 'react-native-svg';
 
-const Pile = ({color, player}) => {
+const Pile = ({color, cell, player, onPress, pieceId}) => {
   const rotation = useRef(new Animated.Value(0)).current;
   const pileImage = BackgroundImage.GetImage(color);
 
