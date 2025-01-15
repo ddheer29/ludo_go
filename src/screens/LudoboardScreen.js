@@ -1,5 +1,12 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import {
+  Animated,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
 import Wrapper from '../components/Wrapper';
 import MenuIcon from '../assets/images/menu.png';
 import {deviceHeight, deviceWidth} from '../constants/Scaling';
@@ -10,8 +17,64 @@ import VerticalPath from '../components/VerticalPath';
 import {Plot1Data, Plot2Data, Plot3Data, Plot4Data} from '../helper/PlotData';
 import HorizontalPath from '../components/HorizontalPath';
 import FourTriangles from '../components/FourTriangles';
+import {useSelector} from 'react-redux';
+import {
+  selectDicetouch,
+  selectPlayer1,
+  selectPlayer2,
+  selectPlayer3,
+  selectPlayer4,
+} from '../redux/reducers/gameSelectors';
+import {useIsFocused} from '@react-navigation/native';
 
 const LudoBoardScreen = () => {
+  const player1 = useSelector(selectPlayer1);
+  const player2 = useSelector(selectPlayer2);
+  const player3 = useSelector(selectPlayer3);
+  const player4 = useSelector(selectPlayer4);
+  const isDiceTouch = useSelector(selectDicetouch);
+  const winner = useSelector(state => state.game.winner);
+
+  const isFoucsed = useIsFocused();
+
+  const [showStartImage, setShowStartImage] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  const opacity = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (isFoucsed) {
+      setShowStartImage(true);
+      const blinkingAnimation = Animated.loop(
+        Animated.sequence([
+          // seques takes an array of timmings
+          Animated.timing(opacity, {
+            toValue: 2,
+            duration: 500,
+            useNativeDriver: true,
+          }),
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 500,
+            useNativeDriver: true,
+          }),
+        ]),
+      );
+
+      blinkingAnimation.start();
+
+      const timer = setTimeout(() => {
+        blinkingAnimation.stop();
+        setShowStartImage(false);
+      }, 2500);
+
+      return () => {
+        blinkingAnimation.stop();
+        clearTimeout(timer);
+      };
+    }
+  }, [isFoucsed]);
+
   return (
     <Wrapper>
       <TouchableOpacity style={{position: 'absolute', top: 60, left: 20}}>
@@ -20,15 +83,15 @@ const LudoBoardScreen = () => {
 
       <View style={styles.container}>
         <View style={styles.flexRow}>
-          <Dice color={Colors.green} />
-          <Dice color={Colors.yellow} rotate />
+          <Dice color={Colors.green} player={2} data={player2} />
+          <Dice color={Colors.yellow} rotate player={3} data={player3} />
         </View>
 
         <View style={styles.ludoBoard}>
           <View style={styles.plotContainer}>
             <Pocket color={Colors.green} player={2} />
             <VerticalPath cells={Plot2Data} color={Colors.yellow} />
-            <Pocket color={Colors.blue} player={3} />
+            <Pocket color={Colors.yellow} player={3} />
           </View>
 
           <View style={styles.pathContainer}>
@@ -40,15 +103,27 @@ const LudoBoardScreen = () => {
           <View style={styles.plotContainer}>
             <Pocket color={Colors.red} player={1} />
             <VerticalPath cells={Plot4Data} color={Colors.red} />
-            <Pocket color={Colors.yellow} player={4} />
+            <Pocket color={Colors.blue} player={4} />
           </View>
         </View>
 
         <View style={styles.flexRow}>
-          <Dice color={Colors.red} />
-          <Dice color={Colors.blue} rotate />
+          <Dice color={Colors.red} player={1} data={player1} />
+          <Dice color={Colors.blue} rotate player={4} data={player4} />
         </View>
       </View>
+
+      {showStartImage && (
+        <Animated.Image
+          source={require('../assets/images/start.png')}
+          style={{
+            width: deviceWidth * 0.5,
+            height: deviceWidth * 0.2,
+            position: 'absolute',
+            opacity,
+          }}
+        />
+      )}
     </Wrapper>
   );
 };
