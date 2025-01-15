@@ -28,7 +28,7 @@ export const initialState = {
   player2: player2InitialState,
   player3: player3InitialState,
   player4: player4InitialState,
-  chnacePlayer: 1, // whose player turn
+  chancePlayer: 1, // whose player turn
   diceNo: 0, // dice number
   isDiceRolled: false, // dice rolled or not
   pileSelectionPlayer: -1, // which players is allowed to select pile, others touch will be disabled
