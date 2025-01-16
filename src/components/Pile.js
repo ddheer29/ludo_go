@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useMemo, useRef} from 'react';
-import {BackgroundImage} from '../helper/GetIcon';
-import {Svg, Circle} from 'react-native-svg';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { BackgroundImage } from '../helper/GetIcon';
+import { Svg, Circle } from 'react-native-svg';
 
-const Pile = ({color, cell, player, onPress, pieceId}) => {
+const Pile = ({ color, cell, player, onPress, pieceId }) => {
   const rotation = useRef(new Animated.Value(0)).current;
   const pileImage = BackgroundImage.GetImage(color);
 
@@ -44,7 +44,7 @@ const Pile = ({color, cell, player, onPress, pieceId}) => {
           <Animated.View
             style={[
               styles.dashedCircle,
-              {transform: [{rotate: rotateInterpolate}]},
+              { transform: [{ rotate: rotateInterpolate }] },
             ]}>
             <Svg width="18" height="18">
               <Circle
