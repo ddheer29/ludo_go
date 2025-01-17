@@ -13,12 +13,12 @@ const Navigation = () => {
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
-        initialRouteName="LudoBoard"
+        initialRouteName="LudoBoardScreen"
         screenOptions={() => ({
           headerShown: false,
         })}>
         <Stack.Screen
-          name="LudoBoard"
+          name="LudoBoardScreen"
           component={LudoBoardScreen}
           options={{
             animation: 'fade',

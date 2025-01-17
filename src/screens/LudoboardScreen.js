@@ -40,7 +40,7 @@ const LudoBoardScreen = () => {
   const [showStartImage, setShowStartImage] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
 
-  const opacity = useRef(new Animated.Value(0)).current;
+  const opacity = useRef(new Animated.Value(1)).current;
 
   // useEffect(() => {
   //   if (isFoucsed) {
@@ -49,7 +49,7 @@ const LudoBoardScreen = () => {
   //       Animated.sequence([
   //         // seques takes an array of timmings
   //         Animated.timing(opacity, {
-  //           toValue: 2,
+  //           toValue: 0,
   //           duration: 500,
   //           useNativeDriver: true,
   //         }),
