@@ -42,38 +42,38 @@ const LudoBoardScreen = () => {
 
   const opacity = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => {
-    if (isFoucsed) {
-      setShowStartImage(true);
-      const blinkingAnimation = Animated.loop(
-        Animated.sequence([
-          // seques takes an array of timmings
-          Animated.timing(opacity, {
-            toValue: 2,
-            duration: 500,
-            useNativeDriver: true,
-          }),
-          Animated.timing(opacity, {
-            toValue: 1,
-            duration: 500,
-            useNativeDriver: true,
-          }),
-        ]),
-      );
+  // useEffect(() => {
+  //   if (isFoucsed) {
+  //     setShowStartImage(true);
+  //     const blinkingAnimation = Animated.loop(
+  //       Animated.sequence([
+  //         // seques takes an array of timmings
+  //         Animated.timing(opacity, {
+  //           toValue: 2,
+  //           duration: 500,
+  //           useNativeDriver: true,
+  //         }),
+  //         Animated.timing(opacity, {
+  //           toValue: 1,
+  //           duration: 500,
+  //           useNativeDriver: true,
+  //         }),
+  //       ]),
+  //     );
 
-      blinkingAnimation.start();
+  //     blinkingAnimation.start();
 
-      const timer = setTimeout(() => {
-        blinkingAnimation.stop();
-        setShowStartImage(false);
-      }, 2500);
+  //     const timer = setTimeout(() => {
+  //       blinkingAnimation.stop();
+  //       setShowStartImage(false);
+  //     }, 2500);
 
-      return () => {
-        blinkingAnimation.stop();
-        clearTimeout(timer);
-      };
-    }
-  }, [isFoucsed]);
+  //     return () => {
+  //       blinkingAnimation.stop();
+  //       clearTimeout(timer);
+  //     };
+  //   }
+  // }, [isFoucsed]);
 
   return (
     <Wrapper>
