@@ -10,19 +10,23 @@ export const gameSlice = createSlice({
       state.diceNo = action.payload.diceNo;
       state.isDiceRolled = true;
     },
+    // kis bande ko pile select karne ka chance diya jaye
     enablePileSelection: (state, action) => {
       state.touchDiceBlock = true;
       state.pileSelectionPlayer = action.payload.playerNo;
     },
+    // kis bande ko cell select karne ka chance diya jaye
     enableCellSelection: (state, action) => {
       state.touchDiceBlock = true;
       state.cellSelectionPlayer = action.payload.playerNo;
     },
+    // touch disable krna means piles move krne ka time
     disableTouch: state => {
       state.touchDiceBlock = true;
       state.cellSelectionPlayer = -1;
       state.pileSelectionPlayer = -1;
     },
+    // dice disable krne ke baad firse enable krne kyoki aapnse kisi ki goti kati hai ab aapko firse chance milega
     unfreezeDice: state => {
       state.touchDiceBlock = false;
       state.isDiceRolled = false;
@@ -33,6 +37,7 @@ export const gameSlice = createSlice({
     announceWinner: (state, action) => {
       state.winner = action.payload;
     },
+    // naye bande ki bari
     updatePlayerChance: (state, action) => {
       state.chancePlayer = action.payload.chancePlayer;
       state.touchDiceBlock = false;

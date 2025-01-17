@@ -18,6 +18,7 @@ import {
   selectDiceRolled,
 } from '../redux/reducers/gameSelectors';
 import {
+  enableCellSelection,
   enablePileSelection,
   updateDiceNo,
   updatePlayerChance,
@@ -42,12 +43,14 @@ const Dice = React.memo(({color, rotate, player, data}) => {
   const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
   const handleDicePress = async () => {
+    // roll the dice and update the dice number
     const newDiceNo = Math.floor(Math.random() * 6) + 1;
     setDiceRolling(true);
     await delay(800);
     dispatch(updateDiceNo({diceNo: newDiceNo}));
     setDiceRolling(false);
 
+    // check if any piece is alive means koi goti khuli? (0 means goti is locked and 57 means goti is in home)
     const isAnyPieceAlive = data?.findIndex(i => i.pos !== 57 && i.pos !== 0);
     const isAnyPieceLocked = data?.findIndex(i => i.pos !== 0);
 
@@ -60,9 +63,33 @@ const Dice = React.memo(({color, rotate, player, data}) => {
           chancePlayer = 1;
         }
         await delay(600);
+        console.log('chancePlayer', chancePlayer);
         dispatch(updatePlayerChance({chancePlayer: chancePlayer}));
       }
     } else {
+      // hamari koi ek bhi goti khuli hui hai
+      const canMove = playerPieces.some(
+        pile => pile.travelCount + newDiceNo <= 57 && pile.pos != 0,
+      );
+      if (
+        (!canMove && newDiceNo === 6 && isAnyPieceLocked == -1) ||
+        (!canMove && newDiceNo != 6 && isAnyPieceLocked != -1) ||
+        (!canMove && newDiceNo != 6 && isAnyPieceLocked == -1)
+      ) {
+        const chancePlayer = player + 1;
+        if (chancePlayer > 4) {
+          chancePlayer = 1;
+        }
+        await delay(600);
+        console.log('chancePlayer', chancePlayer);
+        dispatch(updatePlayerChance({chancePlayer: chancePlayer}));
+        return;
+      }
+
+      if (newDiceNo === 6) {
+        dispatch(enablePileSelection({playerNo: player}));
+      }
+      dispatch(enableCellSelection({playerNo: player}));
     }
   };
 

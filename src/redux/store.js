@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import {configureStore} from '@reduxjs/toolkit';
 import rootReducer from './rootReducer';
 import reduxStorage from './storage';
 import {
@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const persistConfig = {
   key: 'root',
-  storage: reduxStorage,
+  storage: AsyncStorage,
   whitelist: ['game'],
 };
 
