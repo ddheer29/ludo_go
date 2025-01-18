@@ -43,6 +43,37 @@ export const gameSlice = createSlice({
       state.touchDiceBlock = false;
       state.isDiceRolled = false;
     },
+
+    // update goti vlaue
+    updatePlayerPieceValue: (state, action) => {
+      const {playerNo, pieceId, pos, travelCount} = action.payload;
+      const playerPieces = state[playerNo];
+      const piece = playerPieces.find(p => p.id === pieceId);
+      state.pileSelectionPlayer = -1;
+
+      if (piece) {
+        piece.pos = pos;
+        piece.travelCount = travelCount;
+        const currentPositionIndex = state.currentPositions.findIndex(
+          p => p.id === pieceId,
+        );
+
+        // pos 0 means goti ghar me hai
+        if (pos == 0) {
+          if (currentPositionIndex != -1) {
+            state.currentPositions.splice(currentPositionIndex, 1);
+          }
+        }
+        // pos 0 nhi hai means wo path pr hai
+        else {
+          if (currentPositionIndex != -1) {
+            state.currentPositions[currentPositionIndex] = {id: pieceId, pos};
+          } else {
+            state.currentPositions.push({id: pieceId, pos});
+          }
+        }
+      }
+    },
   },
 });
 
@@ -56,6 +87,7 @@ export const {
   updateFireworks,
   announceWinner,
   updatePlayerChance,
+  updatePlayerPieceValue,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;
