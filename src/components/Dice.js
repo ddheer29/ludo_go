@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
-import {LinearGradient} from 'react-native-linear-gradient';
-import {BackgroundImage} from '../helper/GetIcon';
+import React, { useEffect, useRef, useState } from 'react';
+import { LinearGradient } from 'react-native-linear-gradient';
+import { BackgroundImage } from '../helper/GetIcon';
 import LottieView from 'lottie-react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentPlayerChance,
   selectDiceNo,
@@ -24,7 +24,7 @@ import {
   updatePlayerChance,
 } from '../redux/reducers/gameSlice';
 
-const Dice = React.memo(({color, rotate, player, data}) => {
+const Dice = React.memo(({ color, rotate, player, data }) => {
   const dispatch = useDispatch();
   const currentPlayerChance = useSelector(selectCurrentPlayerChance);
   const isDiceRolled = useSelector(selectDiceRolled);
@@ -47,7 +47,7 @@ const Dice = React.memo(({color, rotate, player, data}) => {
     const newDiceNo = Math.floor(Math.random() * 6) + 1;
     setDiceRolling(true);
     await delay(800);
-    dispatch(updateDiceNo({diceNo: newDiceNo}));
+    dispatch(updateDiceNo({ diceNo: newDiceNo }));
     setDiceRolling(false);
 
     // check if any piece is alive means koi goti khuli? (0 means goti is locked and 57 means goti is in home)
@@ -56,7 +56,7 @@ const Dice = React.memo(({color, rotate, player, data}) => {
 
     if (isAnyPieceAlive === -1) {
       if (newDiceNo === 6) {
-        dispatch(enablePileSelection({playerNo: player}));
+        dispatch(enablePileSelection({ playerNo: player }));
       } else {
         const chancePlayer = player + 1;
         if (chancePlayer > 4) {
@@ -64,7 +64,7 @@ const Dice = React.memo(({color, rotate, player, data}) => {
         }
         await delay(600);
         console.log('chancePlayer', chancePlayer);
-        dispatch(updatePlayerChance({chancePlayer: chancePlayer}));
+        dispatch(updatePlayerChance({ chancePlayer: chancePlayer }));
       }
     } else {
       // hamari koi ek bhi goti khuli hui hai
@@ -82,14 +82,14 @@ const Dice = React.memo(({color, rotate, player, data}) => {
         }
         await delay(600);
         console.log('chancePlayer', chancePlayer);
-        dispatch(updatePlayerChance({chancePlayer: chancePlayer}));
+        dispatch(updatePlayerChance({ chancePlayer: chancePlayer }));
         return;
       }
 
       if (newDiceNo === 6) {
-        dispatch(enablePileSelection({playerNo: player}));
+        dispatch(enablePileSelection({ playerNo: player }));
       }
-      dispatch(enableCellSelection({playerNo: player}));
+      dispatch(enableCellSelection({ playerNo: player }));
     }
   };
 
@@ -117,13 +117,13 @@ const Dice = React.memo(({color, rotate, player, data}) => {
   }, []);
 
   return (
-    <View style={[styles.flexRow, {transform: [{scaleX: rotate ? -1 : 1}]}]}>
+    <View style={[styles.flexRow, { transform: [{ scaleX: rotate ? -1 : 1 }] }]}>
       <View style={styles.border1}>
         <LinearGradient
           style={styles.linearGradient}
           colors={['#0052be', '#5f9fcb', '#97c6c9']}
-          start={{x: 0, y: 0.5}}
-          end={{x: 1, y: 0.5}}>
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}>
           <View style={styles.pileContainer}>
             <Image source={pileIcon} style={styles.pileIcon} />
           </View>
@@ -134,8 +134,8 @@ const Dice = React.memo(({color, rotate, player, data}) => {
         <LinearGradient
           style={styles.diceGradient}
           colors={['#aac8ab', '#aac8ab', '#aac8ab']}
-          start={{x: 0, y: 0.5}}
-          end={{x: 1, y: 0.5}}>
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}>
           <View style={styles.diceContainer}>
             {currentPlayerChance === player && !diceRolling && (
               <TouchableOpacity
@@ -150,10 +150,10 @@ const Dice = React.memo(({color, rotate, player, data}) => {
       </View>
 
       {currentPlayerChance === player && !diceRolling && (
-        <Animated.View style={{transform: [{translateX: arroAnim}]}}>
+        <Animated.View style={{ transform: [{ translateX: arroAnim }] }}>
           <Image
             source={require('../assets/images/arrow.png')}
-            style={{height: 30, width: 50}}
+            style={{ height: 30, width: 50 }}
           />
         </Animated.View>
       )}
@@ -221,8 +221,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   diceGradient: {
-    borderWidth: 3,
-    borderLeftWidth: 3,
+    // borderWidth: 3,
+    // borderLeftWidth: 3,
     backgroundColor: '#f0ce2c',
     justifyContent: 'center',
     alignItems: 'center',
