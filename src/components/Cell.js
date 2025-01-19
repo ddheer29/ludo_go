@@ -7,6 +7,7 @@ import {ArrowRightIcon, StarIcon} from 'react-native-heroicons/outline';
 import RFValue from 'react-native-responsive-fontsize';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectCurrentPosition} from '../redux/reducers/gameSelectors';
+import {handleForwardThunk} from '../redux/reducers/gameAction';
 
 const Cell = ({color, id}) => {
   const dispatch = useDispatch();
@@ -21,7 +22,12 @@ const Cell = ({color, id}) => {
     [plottedPieces, id],
   );
 
-  const handlePress = useCallback((playerNo, pieceId) => {}, [dispatch, id]);
+  const handlePress = useCallback(
+    (playerNo, pieceId) => {
+      dispatch(handleForwardThunk(playerNo, pieceId, id));
+    },
+    [dispatch, id],
+  );
 
   return (
     <View
