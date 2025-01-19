@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useCallback} from 'react';
 import {useDispatch} from 'react-redux';
-import {resetGame} from '../redux/reducers/gameSlice';
+import {announceWinner, resetGame} from '../redux/reducers/gameSlice';
 import {playSound} from '../helper/SoundUtility';
 import {goBack} from '../helper/NavigationUtil';
 import Modal from 'react-native-modal';
@@ -14,6 +14,7 @@ const MenuModal = ({visible, onPressHide}) => {
   const handleNewGame = useCallback(() => {
     dispatch(resetGame());
     playSound('game_start');
+    dispatch(announceWinner(null));
     onPressHide();
   }, [dispatch, onPressHide]);
 
