@@ -95,7 +95,7 @@ const Plot = ({data, onPress, pieceNo, player, color}) => {
   );
 };
 
-export default Pocket;
+export default React.memo(Pocket);
 
 const styles = StyleSheet.create({
   container: {

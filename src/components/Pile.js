@@ -105,7 +105,7 @@ const Pile = ({color, cell, player, onPress, pieceId}) => {
   );
 };
 
-export default Pile;
+export default React.memo(Pile);
 
 const styles = StyleSheet.create({
   container: {
