@@ -13,7 +13,7 @@ const Navigation = () => {
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
-        initialRouteName="LudoBoardScreen"
+        initialRouteName="SplashScreen"
         screenOptions={() => ({
           headerShown: false,
         })}>
