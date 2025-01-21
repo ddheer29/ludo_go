@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Wrapper from '../components/Wrapper';
 import MenuIcon from '../assets/images/menu.png';
 import {deviceHeight, deviceWidth} from '../constants/Scaling';
@@ -26,6 +26,9 @@ import {
   selectPlayer4,
 } from '../redux/reducers/gameSelectors';
 import {useIsFocused} from '@react-navigation/native';
+import MenuModal from '../components/MenuModal';
+import {playSound} from '../helper/SoundUtility';
+import WinModal from '../components/WinModal';
 
 const LudoBoardScreen = () => {
   const player1 = useSelector(selectPlayer1);
@@ -75,14 +78,23 @@ const LudoBoardScreen = () => {
   //   }
   // }, [isFoucsed]);
 
+  const handleMenuPress = useCallback(() => {
+    playSound('ui');
+    setMenuVisible(true);
+  }, []);
+
   return (
     <Wrapper>
-      <TouchableOpacity style={{position: 'absolute', top: 60, left: 20}}>
+      <TouchableOpacity
+        onPress={handleMenuPress}
+        style={{position: 'absolute', top: 60, left: 20}}>
         <Image source={MenuIcon} style={{width: 30, height: 30}} />
       </TouchableOpacity>
 
       <View style={styles.container}>
-        <View style={styles.flexRow}>
+        <View
+          style={styles.flexRow}
+          pointerEvents={isDiceTouch ? 'none' : 'auto'}>
           <Dice color={Colors.green} player={2} data={player2} />
           <Dice color={Colors.yellow} rotate player={3} data={player3} />
         </View>
@@ -96,7 +108,12 @@ const LudoBoardScreen = () => {
 
           <View style={styles.pathContainer}>
             <HorizontalPath cells={Plot1Data} color={Colors.green} />
-            <FourTriangles />
+            <FourTriangles
+              player1={player1}
+              player2={player2}
+              player3={player3}
+              player4={player4}
+            />
             <HorizontalPath cells={Plot3Data} color={Colors.blue} />
           </View>
 
@@ -107,7 +124,9 @@ const LudoBoardScreen = () => {
           </View>
         </View>
 
-        <View style={styles.flexRow}>
+        <View
+          style={styles.flexRow}
+          pointerEvents={isDiceTouch ? 'none' : 'auto'}>
           <Dice color={Colors.red} player={1} data={player1} />
           <Dice color={Colors.blue} rotate player={4} data={player4} />
         </View>
@@ -124,6 +143,15 @@ const LudoBoardScreen = () => {
           }}
         />
       )}
+
+      {menuVisible && (
+        <MenuModal
+          onPressHide={() => setMenuVisible(false)}
+          visible={menuVisible}
+        />
+      )}
+
+      {winner != null && <WinModal winner={winner} />}
     </Wrapper>
   );
 };

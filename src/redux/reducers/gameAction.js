@@ -152,6 +152,6 @@ function checkWiningCriteria(pieces) {
     if (piece.travelCount < 57) {
       return false;
     }
-    return true;
   }
+  return true;
 }
